@@ -52,7 +52,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const Padding(
+                padding: EdgeInsets.only(top: 12, bottom: 4),
+                child: TitleText(
+                  text: "Category",
+                  fontSize: 18,
+                  textAlign: TextAlign.left,
+                ),
+              ),
               SizedBox(
                 height: 40,
                 child: ListView.builder(
@@ -74,22 +81,40 @@ class _HomePageState extends State<HomePage> {
                           ));
                     }),
               ),
-              const SizedBox(height: 8),
+              const Padding(
+                padding: EdgeInsets.only(top: 12, bottom: 4),
+                child: TitleText(
+                  text: "Food by category",
+                  fontSize: 18,
+                  textAlign: TextAlign.left,
+                ),
+              ),
               controller.isLoading.value
                   ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [Loading()]))
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 20,
-                      padding: const EdgeInsets.only(right: 25),
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return HomeWidget(
-                            category: controller.selectedCategory.value);
-                      })
+                  : controller.foodList.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: controller.foodList.length,
+                          padding: const EdgeInsets.only(right: 25),
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return HomeWidget(
+                                foodModel: controller.foodList[index],
+                                category: controller.selectedCategory.value);
+                          },
+                        )
+                      : Container(
+                          alignment: Alignment.center,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: TitleText(
+                            text:
+                                "No ${controller.selectedCategory.value} found",
+                          ),
+                        )
             ],
           ),
         ),

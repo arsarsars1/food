@@ -1,12 +1,18 @@
+import 'dart:collection';
+
 import 'package:food/export.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  var isLoading = false.obs;
-  var selectedCategory = "Beef".obs;
+  RxBool isLoading = false.obs;
+  RxBool isSave = false.obs;
+  RxString selectedCategory = "Beef".obs;
+  RxList<FoodModel> foodList = <FoodModel>[].obs;
+  CartController cartController = Get.put(CartController());
+  FavController favController = Get.put(FavController());
 
   @override
-  void onInit() {
+  void onInit() async {
     fetchData(selectedCategory.value);
     super.onInit();
   }
@@ -20,19 +26,23 @@ class HomeController extends GetxController {
     isLoading(true);
 
     try {
-      // playList.clear();
+      foodList.clear();
       await ApiRequest(
         requestUrl: Config.byCategory + category,
       ).getRequest().then((value) async {
-        if (value != null && await value.data != null) {
-          // playList.assignAll(List<PlayListModel>.from(
-          //     value.data.map((x) => PlayListModel.fromJson(x))));
+        if (value != null &&
+            await value.data != null &&
+            value.data["meals"] != null) {
+          var list = List<FoodModel>.from(
+              value.data["meals"].map((x) => FoodModel.fromJson(x)));
+          foodList.assignAll(LinkedHashSet<FoodModel>.from(list).toList());
           isLoading(false);
         } else {
           isLoading(false);
         }
       });
     } catch (e) {
+      foodList.clear();
       Utilities.debugPrintCustom("fetchData $e");
       isLoading(false);
     }

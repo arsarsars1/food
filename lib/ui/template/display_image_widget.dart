@@ -8,14 +8,20 @@ class DisplayImage extends StatelessWidget {
   final double? height;
   final double? width;
   final double radius;
+  final BorderRadius? borderRadius;
   const DisplayImage(
-      {Key? key, required this.url, this.height, this.width, this.radius = 20})
+      {Key? key,
+      required this.url,
+      this.height,
+      this.width,
+      this.radius = 20,
+      this.borderRadius})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
+      borderRadius: borderRadius ?? BorderRadius.circular(radius),
       child: CachedNetworkImage(
           imageUrl: url,
           width: width,
@@ -27,7 +33,8 @@ class DisplayImage extends StatelessWidget {
                   width: width,
                   height: height,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(radius),
+                      borderRadius:
+                          borderRadius ?? BorderRadius.circular(radius),
                       border: Border.all(color: ColorsCustom.black)),
                   child: const CupertinoActivityIndicator(
                       radius: 20, color: ColorsCustom.black)),
@@ -35,7 +42,7 @@ class DisplayImage extends StatelessWidget {
               width: width,
               height: height,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(radius),
+                  borderRadius: borderRadius ?? BorderRadius.circular(radius),
                   border: Border.all(color: ColorsCustom.black)),
               child: const Icon(Icons.error, color: ColorsCustom.black))),
     );

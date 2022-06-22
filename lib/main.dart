@@ -35,6 +35,7 @@ class SplashScreen extends StatelessWidget {
           Image.asset(
             "assets/food.jpeg",
             fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
           ),
           Positioned(
@@ -42,7 +43,7 @@ class SplashScreen extends StatelessWidget {
             right: MediaQuery.of(context).size.width * 0.1,
             left: MediaQuery.of(context).size.width * 0.1,
             child: ButtonWidget(
-              onTap: () => Get.to(() => const HomePage()),
+              onTap: () => Get.to(() => const LandingPage()),
               text: "Enter",
               isSelected: true,
               color: ColorsCustom.white,

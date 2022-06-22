@@ -84,7 +84,6 @@ class Utilities {
 
   static Future<void> initApp() async {
     await GetStorage.init();
-    Get.put(HomeController());
   }
 }
 
